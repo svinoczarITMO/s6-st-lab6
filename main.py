@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -19,18 +20,14 @@ def update_grid(grid):
                      grid[(i-1)%rows, (j-1)%cols] + grid[(i-1)%rows, (j+1)%cols] +
                      grid[(i+1)%rows, (j-1)%cols] + grid[(i+1)%rows, (j+1)%cols])
 
-             # Применение модифицированных правил игры 'Жизнь'
+            # Применение правил игры 'Жизнь'
             if grid[i, j] == 1:
-                if total < 2 or total > 3:
-                    new_grid[i, j] = 0
-                elif total == 1:  # Новое правило: выживание при 1 соседе
-                    new_grid[i, j] = 1
-                elif total == 3:  # Новое правило: смерть при 3 соседях
+                if (total < 2) or (total > 3):
                     new_grid[i, j] = 0
             else:
-                if total == 3 or total == 4:  # Новое правило: рождение при 4 соседях
+                if total == 3:
                     new_grid[i, j] = 1
-                    
+
     return new_grid
 
 def animate_life(grid, iterations=50):
@@ -43,13 +40,13 @@ def animate_life(grid, iterations=50):
         grid = update_grid(grid)
         img.set_array(grid)
         return img,
-
-    ani = animation.FuncAnimation(fig, update, frames=iterations, interval=200, blit=True)
+    time.sleep(4)
+    ani = animation.FuncAnimation(fig, update, frames=iterations, interval=1000, blit=True)
     plt.show()
 
 # Инициализация начальной сетки
 grid_size = 50
-initial_grid = initialize_grid(grid_size, initial_density=0.3)
+initial_grid = initialize_grid(grid_size, initial_density=0.30)
 
 # Запуск анимации
-animate_life(initial_grid, iterations=50)
+animate_life(initial_grid, iterations=1)
